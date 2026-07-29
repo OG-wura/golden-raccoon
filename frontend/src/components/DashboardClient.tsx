@@ -848,6 +848,12 @@ export function DashboardClient() {
                     // Build expected effects from the decision data so the
                     // prepared transaction has meaningful metadata. The server
                     // cross-validates these against its own execution preview.
+                    //
+                    // Include `method` so the server can derive a 4‑byte EVM
+                    // function selector (or Stellar operation type) for the
+                    // approval flow.  The selector is minimal — a connected DEX
+                    // aggregator supplies full argument data in production.
+                    const swapMethod = "swapExactTokensForTokens";
                     const expectedEffects = riskyToken
                       ? [
                           {
@@ -858,10 +864,7 @@ export function DashboardClient() {
                             toAddress: toAddress ?? undefined,
                             amount: estimatedValue ? `${(estimatedValue * 0.3).toFixed(2)}` : undefined,
                             contractAddress: fromAddress,
-                            // Generic method placeholder — the server validates
-                            // effects against its own preview data, not against
-                            // calldata selectors. A null/missing method causes
-                            // the selector check to skip gracefully.
+                            method: swapMethod,
                             assetKey: riskyToken.symbol,
                           },
                         ]

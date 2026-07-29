@@ -305,7 +305,7 @@ async function runApprovalFlowFixtures() {
         actionSafe: true,
       }, "Expired plan");
       assert(result.blockedReason?.toLowerCase().includes("expired"), "Expired plan must mention expiration");
-      
+
       // Verify the record was marked as expired in storage
       const record = getTransactionRecord(hash);
       assert(record?.lifecycleStatus === "expired", "Expired plan must update lifecycle to expired");
